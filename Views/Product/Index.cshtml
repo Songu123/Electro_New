@@ -1,0 +1,15 @@
+﻿@model IEnumerable<E_commerce.Models.Product>;
+
+   <h2>Danh sách các sản phẩm</h2>
+
+   <table class="table table-bordered table-striped">
+       <tbody>
+
+    @foreach( var item in Model)
+    {
+        <tr>@item.Id</tr>
+        <tr>@item.Name</tr>
+        <tr>@item.Price</tr>
+    }
+       </tbody>
+</table>
