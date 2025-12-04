@@ -1,45 +1,24 @@
-﻿using E_commerce.Models;
+﻿using E_commerce.Data;
+using E_commerce.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace E_commerce.Controllers
 {
     public class ProductController : Controller
     {
-        static List<Product> Products = new()
+        private readonly AppDbContext _context;
+
+        public ProductController(AppDbContext context)
         {
-            new Product {Id = 1, Name = "Son", Price = 3.5},
-            new Product {Id = 2, Name = "Nam", Price = 3.8}
-        };
-        public IActionResult Index()
-        {
-            return View(Products);
+            _context = context;
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var products = await _context.Products.ToListAsync();
+            return View(products);
         }
 
-
-        [HttpPost]
-        public IActionResult Create(Product p)
-        {
-            p.Id = Products.Max(x => x.Id) + 1;
-            Products.Add(p);
-            return RedirectToAction("Index");
-        }
-
-
-        public IActionResult Detail()
-        {
-            var product = new Product
-            {
-                Id = 1,
-                Name = "Laptop Dell XPS 13",
-                Price = 999.99
-            };
-
-            return View(product);
-        }
     }
 }
