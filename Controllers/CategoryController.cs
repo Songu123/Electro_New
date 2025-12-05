@@ -1,10 +1,12 @@
 ﻿using E_commerce.Models;
+
 using Microsoft.AspNetCore.Mvc;
 
 namespace E_commerce.Controllers
 {
     public class CategoryController : Controller
     {
+
         private readonly IGenericRepository<Category> _repo;
 
         public CategoryController(IGenericRepository<Category> repo)
@@ -49,6 +51,18 @@ namespace E_commerce.Controllers
         {
             await _repo.Delete(id);
             return RedirectToAction("Index");
+        }
+    }
+
+        private readonly IGenericRepository<Category> _categoryRepository;
+
+        public CategoryController(IGenericRepository<Category> categoryRepository)
+        {
+            _categoryRepository = categoryRepository;
+        }
+        public async Task<IActionResult> Index()
+        {
+            return View(await _categoryRepository.GetAll());
         }
     }
 

@@ -1,4 +1,4 @@
-﻿using E_commerce.Data;
+using E_commerce.Data;
 using Microsoft.EntityFrameworkCore;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
@@ -32,6 +32,5 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         var obj = await GetById(id);
         _context.Set<T>().Remove(obj);
-        await _context.SaveChangesAsync();
-    }
+        await _context.SaveChangesAsync();}
 }
