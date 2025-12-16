@@ -1,26 +1,33 @@
 ﻿@model IEnumerable<E_commerce.Models.Category>
+
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var stt = 1;
 }
-
+<div class="d-flex  flex-row-reverse me-4 p-2">
+    <!-- Button trigger modal -->
+    <a class="btn btn-success" asp-action="Create" >
+        Add New Category
+    </a>
+</div>
 <table class="table table-bordered ">
     <thead class="table-dark">
         <tr>
-            <th scope="col">Id</th>
+            <th scope="col">STT</th>
             <th scope="col">Name</th>
             <th scope="col">Description</th>
             <th scope="col">Actions</th>
         </tr>
     </thead>
     <tbody>
-        @foreach(var category in Model)
+        @foreach (var category in Model)
         {
             <tr>
-                <th scope="row">@category.Id</th>
+                <th >@stt</th>
                 <td>@category.Name</td>
                 <td>@category.Description</td>
                 <td>
-                    <button class="btn btn-success"
+                    <button class="btn btn-warning text-light"
                             data-bs-toggle="modal"
                             data-bs-target="#editModal"
                             data-id="@category.Id"
@@ -30,8 +37,9 @@
                     </button>
 
                     <a asp-action="Delete" asp-route-id="@category.Id" onclick="return confirm('Bạn chắc muốn xóa?');" class="btn btn-danger">Delete</a>
-                   
+                </td>
             </tr>
+            stt++;
         }
     </tbody>
 </table>
