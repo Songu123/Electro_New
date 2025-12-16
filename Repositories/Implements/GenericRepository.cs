@@ -1,36 +1,50 @@
-using E_commerce.Data;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
+using E_commerce.Data;
 
 public class GenericRepository<T> : IGenericRepository<T> where T : class
 {
-    private readonly AppDbContext _context;
+    protected readonly AppDbContext _context;
+    protected readonly DbSet<T> _dbSet;
 
     public GenericRepository(AppDbContext context)
     {
         _context = context;
+        _dbSet = context.Set<T>();
     }
 
-    public async Task<IEnumerable<T>> GetAll() =>
-        await _context.Set<T>().ToListAsync();
-    
-    public async Task<T> GetById(int id) =>
-        await _context.Set<T>().FindAsync(id);
+    public IQueryable<T> GetAll()
+        => _dbSet;
 
-    public async Task Add(T entity)
+    public IQueryable<T> Include(params Expression<Func<T, object>>[] includes)
     {
-        _context.Set<T>().Add(entity);
-        await _context.SaveChangesAsync();
+        IQueryable<T> query = _dbSet;
+        foreach (var include in includes)
+        {
+            query = query.Include(include);
+        }
+        return query;
     }
 
-    public async Task Update(T entity)
+    public async Task<T?> GetByIdAsync(int id)
+        => await _dbSet.FindAsync(id);
+
+    public async Task AddAsync(T entity)
+        => await _dbSet.AddAsync(entity);
+
+    public Task UpdateAsync(T entity)
     {
-        _context.Set<T>().Update(entity);
-        await _context.SaveChangesAsync();
+        _dbSet.Update(entity);
+        return Task.CompletedTask;
     }
 
-    public async Task Delete(int id)
+    public async Task DeleteAsync(int id)
     {
-        var obj = await GetById(id);
-        _context.Set<T>().Remove(obj);
-        await _context.SaveChangesAsync();}
+        var entity = await GetByIdAsync(id);
+        if (entity != null)
+            _dbSet.Remove(entity);
+    }
+
+    public async Task SaveAsync()
+        => await _context.SaveChangesAsync();
 }

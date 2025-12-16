@@ -12,7 +12,12 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
     );
 
-builder.Services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
+// Program.cs
+builder.Services.AddScoped(
+    typeof(IGenericRepository<>),
+    typeof(GenericRepository<>)
+);
+
 
 var app = builder.Build();
 
@@ -33,9 +38,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=home}/{action=Index}/{id?}");
 
 app.Run();
-
-Teacher teacher = new Teacher();
-//teacher.SayHello();

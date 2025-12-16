@@ -1,9 +1,12 @@
+using System.Linq.Expressions;
+
 public interface IGenericRepository<T> where T : class
 {
-    Task<IEnumerable<T>> GetAll();
-    Task<T> GetById(int id);
-    Task Add(T entity);
-    Task Update(T entity);
-    Task Delete(int id);
-
+    IQueryable<T> GetAll();
+    Task<T?> GetByIdAsync(int id);
+    Task AddAsync(T entity);
+    Task UpdateAsync(T entity);
+    Task DeleteAsync(int id);
+    Task SaveAsync();
+    IQueryable<T> Include(params Expression<Func<T, object>>[] includes);
 }
