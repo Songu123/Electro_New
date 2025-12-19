@@ -157,7 +157,7 @@ namespace E_commerce.Controllers
             //Xử lý logic thay đổi ảnh
             if(p.ImageUrl != null && p.ImageUrl.Length > 0)
             {
-                string newImagePath = await SaveIma
+                //string newImagePath = await SaveIma
             }
 
             if (ModelState.IsValid)
