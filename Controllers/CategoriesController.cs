@@ -4,6 +4,7 @@ using E_commerce.Models;
 
 namespace E_commerce.Controllers
 {
+    [Route("admin/category")]
     public class CategoriesController : Controller
     {
         private readonly IGenericRepository<Category> _repo;
@@ -13,11 +14,13 @@ namespace E_commerce.Controllers
             _repo = repo;
         }
 
+        [HttpGet("")]
         public async Task<IActionResult> Index()
         {
             return View(await _repo.GetAll().ToListAsync());
         }
 
+        [HttpGet("details/{id}")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null) return NotFound();
@@ -28,12 +31,14 @@ namespace E_commerce.Controllers
             return View(category);
         }
 
+        [HttpGet("create")]
         public IActionResult Create()
         {
             return View();
         }
 
-        [HttpPost]
+
+        [HttpPost("create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(Category category)
         {
@@ -46,6 +51,7 @@ namespace E_commerce.Controllers
             return View(category);
         }
 
+        [HttpGet("edit")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null) return NotFound();
@@ -56,7 +62,7 @@ namespace E_commerce.Controllers
             return View(category);
         }
 
-        [HttpPost]
+        [HttpPost("edit")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Category category)
         {
@@ -71,6 +77,7 @@ namespace E_commerce.Controllers
             return View(category);
         }
 
+        [HttpGet("delete")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null) return NotFound();
@@ -81,7 +88,7 @@ namespace E_commerce.Controllers
             return View(category);
         }
 
-        [HttpPost, ActionName("Delete")]
+        [HttpPost("delete"), ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
