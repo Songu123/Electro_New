@@ -4,21 +4,19 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-
+	
 	<title>Electro - HTML Ecommerce Template</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
-	<link rel="stylesheet" href="~/css/bootstrap.min.css" />
-	<link rel="stylesheet" href="~/css/slick.css" />
-	<link rel="stylesheet" href="~/css/slick-theme.css" />
-	<link rel="stylesheet" href="~/css/nouislider.min.css" />
+	
+	<!-- Bootstrap 5 from CDN -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	
+	<!-- Custom CSS -->
 	<link rel="stylesheet" href="~/css/font-awesome.min.css" />
 	<link rel="stylesheet" href="~/css/style.css" />
 	<link rel="stylesheet" href="~/css/main.css" />
-
-
 </head>
 <body>
 	<!-- HEADER -->
@@ -38,11 +36,10 @@
 			</div>
 		</div>
 		<!-- /TOP HEADER -->
+		
 		<!-- MAIN HEADER -->
 		<div id="header">
-			<!-- container -->
 			<div class="container">
-				<!-- row -->
 				<div class="row">
 					<!-- LOGO -->
 					<div class="col-md-3">
@@ -53,6 +50,7 @@
 						</div>
 					</div>
 					<!-- /LOGO -->
+					
 					<!-- SEARCH BAR -->
 					<div class="col-md-6">
 						<div class="header-search">
@@ -68,6 +66,7 @@
 						</div>
 					</div>
 					<!-- /SEARCH BAR -->
+					
 					<!-- ACCOUNT -->
 					<div class="col-md-3 clearfix">
 						<div class="header-ctn">
@@ -80,6 +79,7 @@
 								</a>
 							</div>
 							<!-- /Wishlist -->
+							
 							<!-- Cart -->
 							<div class="dropdown">
 								<a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
@@ -122,6 +122,7 @@
 								</div>
 							</div>
 							<!-- /Cart -->
+							
 							<!-- Menu Toggle -->
 							<div class="menu-toggle">
 								<a href="#">
@@ -134,34 +135,45 @@
 					</div>
 					<!-- /ACCOUNT -->
 				</div>
-				<!-- row -->
 			</div>
-			<!-- container -->
 		</div>
 		<!-- /MAIN HEADER -->
 	</header>
 	<!-- /HEADER -->
+	
 	<!-- NAVIGATION -->
-	<nav id="navigation">
-		<!-- container -->
+	<nav id="navigation" class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
 		<div class="container">
-			<!-- responsive-nav -->
-			<div id="responsive-nav">
-				<!-- NAV -->
-				<ul class="main-nav nav navbar-nav">
-					<li class="active"><a asp-controller="Home" asp-action="Index">Home</a></li>
-					<li><a href="#">Hot Deals</a></li>
-					<li><a href="#">Categories</a></li>
-					<li><a href="#">Laptops</a></li>
-					<li><a href="#">Smartphones</a></li>
-					<li><a href="#">Cameras</a></li>
-					<li><a href="#">Accessories</a></li>
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#responsive-nav" aria-controls="responsive-nav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<div class="collapse navbar-collapse" id="responsive-nav">
+				<ul class="navbar-nav me-auto mb-2 mb-lg-0 main-nav">
+					<li class="nav-item">
+						<a class="nav-link active" aria-current="page" asp-controller="Home" asp-action="Index">Home</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Hot Deals</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Categories</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Laptops</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Smartphones</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Cameras</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Accessories</a>
+					</li>
 				</ul>
-				<!-- /NAV -->
 			</div>
-			<!-- /responsive-nav -->
 		</div>
-		<!-- /container -->
 	</nav>
 	<!-- /NAVIGATION -->
 	
@@ -169,11 +181,8 @@
 
 	<!-- FOOTER -->
 	<footer id="footer">
-		<!-- top footer -->
 		<div class="section">
-			<!-- container -->
 			<div class="container">
-				<!-- row -->
 				<div class="row">
 					<div class="col-md-3 col-6">
 						<div class="footer">
@@ -228,15 +237,12 @@
 						</div>
 					</div>
 				</div>
-				<!-- /row -->
 			</div>
-			<!-- /container -->
 		</div>
-		<!-- /top footer -->
+		
 		<!-- bottom footer -->
 		<div id="bottom-footer" class="section">
 			<div class="container">
-				<!-- row -->
 				<div class="row">
 					<div class="col-md-12 text-center">
 						<ul class="footer-payments">
@@ -248,30 +254,24 @@
 							<li><a href="#"><i class="fa fa-cc-amex"></i></a></li>
 						</ul>
 						<span class="copyright">
-							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 							Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-							<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 						</span>
 					</div>
 				</div>
-				<!-- /row -->
 			</div>
-			<!-- /container -->
 		</div>
-		<!-- /bottom footer -->
 	</footer>
 	<!-- /FOOTER -->
 	
-	<!-- jQuery Plugins -->
-	<script src="~/js/jquery.min.js"></script>
-	<script src="~/js/bootstrap.min.js"></script>
+	<!-- Bootstrap 5 Bundle JS -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+	
+	<!-- Custom JS -->
 	<script src="~/js/slick.min.js"></script>
 	<script src="~/js/nouislider.min.js"></script>
 	<script src="~/js/jquery.zoom.min.js"></script>
 	<script src="~/js/main.js"></script>
 
-
 	@RenderSection("Scripts", required: false)
-
 </body>
 </html>
