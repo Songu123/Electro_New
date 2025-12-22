@@ -31,8 +31,8 @@
         <div id="sidebar-wrapper" data-simplebar="" data-simplebar-auto-hide="true">
             <div class="brand-logo">
                 <a href="index.html">
-                    @* <img src="~/assets/images/logo-icon.png" class="logo-icon" alt="logo icon"> *@
-                    <img src="">
+                    <img src="~/assets/images/logo-icon.png" class="logo-icon" alt="logo icon">
+                    @* <img src=""> *@
 
                     <h5 class="logo-text">Dashtreme Admin</h5>
                 </a>
@@ -46,14 +46,14 @@
                 </li>
 
                 <li>
-                    <a href="icons.html">
-                        <i class="zmdi zmdi-invert-colors"></i> <span>UI Icons</span>
+                    <a asp-controller="Categories" asp-action="Index">
+                        <i class="zmdi zmdi-invert-colors"></i> <span>Categories</span>
                     </a>
                 </li>
 
                 <li>
-                    <a href="forms.html">
-                        <i class="zmdi zmdi-format-list-bulleted"></i> <span>Forms</span>
+                    <a asp-controller="Products" asp-action="Index">
+                        <i class="zmdi zmdi-format-list-bulleted"></i> <span>Products</span>
                     </a>
                 </li>
 
@@ -136,13 +136,13 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link dropdown-toggle dropdown-toggle-nocaret" data-toggle="dropdown" href="#">
-                            <span class="user-profile"><img src="https://via.placeholder.com/110x110" class="img-circle" alt="user avatar"></span>
+                            <span class="user-profile"><img src="https://placehold.in/300x200" class="img-circle" alt="user avatar"></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-right">
                             <li class="dropdown-item user-details">
                                 <a href="javaScript:void();">
                                     <div class="media">
-                                        <div class="avatar"><img class="align-self-start mr-3" src="https://via.placeholder.com/110x110" alt="user avatar"></div>
+                                        <div class="avatar"><img class="align-self-start mr-3" src="https://placehold.in/300x200" alt="user avatar"></div>
                                         <div class="media-body">
                                             <h6 class="mt-2 user-title">Sarajhon Mccoy</h6>
                                             <p class="user-subtitle">mccoy@example.com</p>

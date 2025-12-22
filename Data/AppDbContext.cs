@@ -10,6 +10,7 @@ namespace E_commerce.Data
         }
         public DbSet<Models.Product> Products { get; set; }
         public DbSet<Models.Category> Categories { get; set; }
+        public DbSet<Models.User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -79,6 +80,7 @@ namespace E_commerce.Data
 );
 
         }
+        public DbSet<E_commerce.Models.User> User { get; set; } = default!;
 
     }
 

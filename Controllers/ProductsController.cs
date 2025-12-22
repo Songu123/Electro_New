@@ -11,12 +11,14 @@ namespace E_commerce.Controllers
     {
         private readonly IProductRepository _productRepo;
         private readonly ICategoryRepository _categoryRepo;
+        private readonly IFileService _fileService;
 
 
-        public ProductsController(IProductRepository productRepo, ICategoryRepository categoryRepo)
+        public ProductsController(IProductRepository productRepo, ICategoryRepository categoryRepo, IFileService fileService)
         {
             _productRepo = productRepo;
             _categoryRepo = categoryRepo;
+            _fileService = fileService;
         }
 
         public async Task<IActionResult> Index()
@@ -127,46 +129,94 @@ namespace E_commerce.Controllers
             var product = await _productRepo.GetByIdAsync(id.Value);
             if (product == null) return NotFound();
 
+            //Map Product -> ProductEditVm
+            var vm = new ProductEditVm
+            {
+                Id = product.Id,
+                Name = product.Name,
+                Price = product.Price,
+                Description = product.Description,
+                CategoryId = product.CategoryId,
+                ExistingImageUrl = product.ImageUrl
+            };
+
             ViewBag.CategoryId = await _categoryRepo.GetAll()
                 .Select(c => new SelectListItem
                 {
                     Value = c.Id.ToString(),
                     Text = c.Name
+
                 })
                 .ToListAsync();
 
-            return View(product);
+            return View(vm);
         }
 
         // POST: Products/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Product p)
+        public async Task<IActionResult> Edit(int id, ProductEditVm vm)
         {
-            if (id != p.Id) return NotFound();
+            if (id != vm.Id) return NotFound();
 
-            if (!ModelState.IsValid) return View(p);
+            //Load Category dropdown
+            async Task LoadCategory()
+            {
+                ViewBag.CategoryId = await _categoryRepo.GetAll().
+                    Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    }).ToListAsync();
+            }
+
+            if (!ModelState.IsValid)
+            {
+                await LoadCategory();
+                return View(vm);
+            }
 
             //Lấy dữ liệu Database
             var product = await _productRepo.GetByIdAsync(id);
             if (product == null) return NotFound();
 
+            //Update Text Fields
+            product.Name = vm.Name;
+            product.Price = vm.Price;
+            product.CategoryId = vm.CategoryId;
+
             //Cập nhật Description
-            product.Description = p.Description;
+            product.Description = vm.Description;
 
             //Xử lý logic thay đổi ảnh
-            if(p.ImageUrl != null && p.ImageUrl.Length > 0)
+            if (vm.ImageUpload != null && vm.ImageUpload.Length > 0)
             {
-                string newImagePath = await SaveIma
+                if (!string.IsNullOrEmpty(product.ImageUrl))
+                {
+                    //Delete old image
+                    _fileService.DeleteFile(product.ImageUrl);
+                }
+
+                //Save new image url
+                product.ImageUrl = await _fileService.SaveFileAsync(vm.ImageUpload, "products");
             }
 
-            if (ModelState.IsValid)
+            //Save to database
+            try
             {
-                await _productRepo.UpdateAsync(p);
+                await _productRepo.UpdateAsync(product);
                 await _productRepo.SaveAsync();
+                TempData["Success"] = "Product updated successfully.";
                 return RedirectToAction(nameof(Index));
             }
-            return View(product);
+            catch (Exception ex)
+            {
+                vm.ExistingImageUrl = product.ImageUrl;
+                await LoadCategory();
+                ModelState.AddModelError(string.Empty, "An error occurred while updating the product: " + ex.Message);
+                return View(vm);
+            }
+
         }
 
         // GET: Products/Delete/5
