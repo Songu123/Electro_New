@@ -1,5 +1,6 @@
 ﻿using E_commerce.Models;
 using E_commerce.Repositories.Interfaces;
+using E_commerce.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;

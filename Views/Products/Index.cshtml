@@ -27,8 +27,9 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
+        @foreach (var item in Model)
+        {
+            <tr>
                 <td>
                     <img src="~/images/products/@item.ImageUrl"
                          width="80"
@@ -38,18 +39,18 @@
                 </td>
                 <td>
                     @item.Name
-                
-            <td>
+
+                <td>
                     @item.Price
-            </td>
-            <td>
-                @item.Category?.Name
-            <td>
-                <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                </td>
+                <td>
+                    @item.Category?.Name
+                <td>
+                    <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

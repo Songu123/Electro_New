@@ -4,11 +4,12 @@ namespace E_commerce.Models
 {
     public class User
     {
+        [Key]
         public int Id { get; set; }
 
         [Required]
         [MaxLength(50)]
-        public string Name { get; set; } = string.Empty;
+        public string FullName { get; set; } = string.Empty;
 
         [Required]
         [MaxLength(50)]
@@ -20,11 +21,19 @@ namespace E_commerce.Models
         public string Email { get; set; } = string.Empty;
 
         [Required]
-        [MaxLength(8)]
-        public string Password { get; set; } = string.Empty;
+        [MaxLength(255)]
+        public string PasswordHash { get; set; } = string.Empty;
 
+        [Required]
+        [MaxLength(20)]
+        public string Role { get; set; } = "Customer";
 
-        public string ImageIcon { get; set; } = string.Empty;
-        
+        public DateTime CreateAt { get; set; } = DateTime.Now;
+        public bool Status { get; set; } = true;
+
+        //RESET PASSWORD
+        public string? ResetPasswordToken { get; set; }
+        public DateTime? ResetPasswordExpire { get; set; }
+
     }
 }

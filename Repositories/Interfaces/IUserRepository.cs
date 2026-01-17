@@ -10,5 +10,12 @@ namespace E_commerce.Repositories.Interfaces
         //Task<User?> GetWithCategoryByIdAsync(int id);
 
          bool UserExists(int id);
+
+        User GetById(int id);
+        User GetByEmail(string email);
+
+        User GetByUsername(string username);
+
+        void Add(User user);
     }
 }

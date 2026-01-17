@@ -1,4 +1,4 @@
-﻿using E_commerce.Repositories.Interfaces;
+﻿using E_commerce.Services.Interfaces;
 
 namespace E_commerce.Repositories.Implements
 {
