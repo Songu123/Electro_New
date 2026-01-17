@@ -1,4 +1,4 @@
-﻿namespace E_commerce.Repositories.Interfaces
+﻿namespace E_commerce.Services.Interfaces
 {
     public interface IFileService
     {
