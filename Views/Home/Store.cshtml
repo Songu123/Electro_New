@@ -1,355 +1,201 @@
 ﻿@model IEnumerable<E_commerce.Models.Product>
+@{
+    var selectedCategories = ViewBag.SelectedCategories as List<int> ?? new List<int>();
+    var currentSort = ViewBag.SortBy as string ?? "";
+}
 
 <!-- BREADCRUMB -->
 <div id="breadcrumb" class="section">
-    <!-- container -->
     <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
+     <div class="row">
+      <div class="col-md-12">
                 <ul class="breadcrumb-tree">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">All Categories</a></li>
-                    <li><a href="#">Accessories</a></li>
-                    <li class="active">Headphones (227,490 Results)</li>
+         <li><a asp-action="Index" asp-controller="Home">Home</a></li>
+         <li class="active">Store (@ViewBag.TotalProducts Results)</li>
                 </ul>
-            </div>
+     </div>
         </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
+ </div>
 </div>
-<!-- /BREADCRUMB -->
+
 <!-- SECTION -->
 <div class="section">
-    <!-- container -->
     <div class="container">
-        <!-- row -->
         <div class="row">
-            <!-- ASIDE -->
+   <!-- ASIDE -->
             <div id="aside" class="col-md-3">
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Categories</h3>
-                    <div class="checkbox-filter">
+     <!-- Filter Form -->
+        <form method="get" asp-action="Store" asp-controller="Home" id="filterForm">
+       
+         <!-- Category Filter -->
+    <div class="aside">
+    <h3 class="aside-title">Categories</h3>
+    <div class="checkbox-filter">
+     @foreach (var c in ViewBag.Categories)
+            {
+    <div class="input-checkbox">
+    <input type="checkbox"
+     id="cat-@c.Id"
+           name="categories"
+          value="@c.Id"
+     checked="@selectedCategories.Contains(c.Id)"
+     onchange="document.getElementById('filterForm').submit()">
+       <label for="cat-@c.Id">
+              <span></span>
+    @c.Name
+         <small>(@c.Products.Count)</small>
+           </label>
+ </div>
+       }
+     </div>
+           </div>
 
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="category-1">
-                            <label for="category-1">
-                                <span></span>
-                                Laptops
-                                <small>(120)</small>
-                            </label>
-                        </div>
+    <!-- Price Filter -->
+        <div class="aside">
+        <h3 class="aside-title">Price Filter</h3>
+            <div class="price-filter">
+             <div class="input-number price-min">
+      <label for="minPrice">Min Price:</label>
+  <input id="minPrice" name="minPrice" type="number" value="@ViewBag.MinPrice" placeholder="0" min="0" step="100000">
+     </div>
+                  <div class="input-number price-max">
+  <label for="maxPrice">Max Price:</label>
+        <input id="maxPrice" name="maxPrice" type="number" value="@ViewBag.MaxPrice" placeholder="No limit" min="0" step="100000">
+         </div>
+          <button type="submit" class="btn btn-primary btn-block" style="margin-top: 10px;">Apply Filter</button>
+      </div>
+     </div>
 
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="category-2">
-                            <label for="category-2">
-                                <span></span>
-                                Smartphones
-                                <small>(740)</small>
-                            </label>
-                        </div>
+           <!-- Hidden fields để giữ sort -->
+         <input type="hidden" name="sortBy" value="@ViewBag.SortBy" />
+       <input type="hidden" name="page" value="1" />
+     </form>
+ </div>
+   <!-- /ASIDE -->
 
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="category-3">
-                            <label for="category-3">
-                                <span></span>
-                                Cameras
-                                <small>(1450)</small>
-                            </label>
-                        </div>
-
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="category-4">
-                            <label for="category-4">
-                                <span></span>
-                                Accessories
-                                <small>(578)</small>
-                            </label>
-                        </div>
-
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="category-5">
-                            <label for="category-5">
-                                <span></span>
-                                Laptops
-                                <small>(120)</small>
-                            </label>
-                        </div>
-
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="category-6">
-                            <label for="category-6">
-                                <span></span>
-                                Smartphones
-                                <small>(740)</small>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <!-- /aside Widget -->
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Price</h3>
-                    <div class="price-filter">
-                        <div id="price-slider"></div>
-                        <div class="input-number price-min">
-                            <input id="price-min" type="number">
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
-                        </div>
-                        <span>-</span>
-                        <div class="input-number price-max">
-                            <input id="price-max" type="number">
-                            <span class="qty-up">+</span>
-                            <span class="qty-down">-</span>
-                        </div>
-                    </div>
-                </div>
-                <!-- /aside Widget -->
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Brand</h3>
-                    <div class="checkbox-filter">
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="brand-1">
-                            <label for="brand-1">
-                                <span></span>
-                                SAMSUNG
-                                <small>(578)</small>
-                            </label>
-                        </div>
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="brand-2">
-                            <label for="brand-2">
-                                <span></span>
-                                LG
-                                <small>(125)</small>
-                            </label>
-                        </div>
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="brand-3">
-                            <label for="brand-3">
-                                <span></span>
-                                SONY
-                                <small>(755)</small>
-                            </label>
-                        </div>
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="brand-4">
-                            <label for="brand-4">
-                                <span></span>
-                                SAMSUNG
-                                <small>(578)</small>
-                            </label>
-                        </div>
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="brand-5">
-                            <label for="brand-5">
-                                <span></span>
-                                LG
-                                <small>(125)</small>
-                            </label>
-                        </div>
-                        <div class="input-checkbox">
-                            <input type="checkbox" id="brand-6">
-                            <label for="brand-6">
-                                <span></span>
-                                SONY
-                                <small>(755)</small>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <!-- /aside Widget -->
-                <!-- aside Widget -->
-                <div class="aside">
-                    <h3 class="aside-title">Top selling</h3>
-                    <div class="product-widget">
-                        <div class="product-img">
-                            <img src="./img/product01.png" alt="">
-                        </div>
-                        <div class="product-body">
-                            <p class="product-category">Category</p>
-                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                        </div>
-                    </div>
-
-                    <div class="product-widget">
-                        <div class="product-img">
-                            <img src="./img/product02.png" alt="">
-                        </div>
-                        <div class="product-body">
-                            <p class="product-category">Category</p>
-                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                        </div>
-                    </div>
-
-                    <div class="product-widget">
-                        <div class="product-img">
-                            <img src="./img/product03.png" alt="">
-                        </div>
-                        <div class="product-body">
-                            <p class="product-category">Category</p>
-                            <h3 class="product-name"><a href="#">product name goes here</a></h3>
-                            <h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-                        </div>
-                    </div>
-                </div>
-                <!-- /aside Widget -->
-            </div>
-            <!-- /ASIDE -->
             <!-- STORE -->
-            <div id="store" class="col-md-9">
-                <!-- store top filter -->
-                <div class="store-filter clearfix">
-                    <div class="store-sort">
-                        <label>
-                            Sort By:
-                            <select class="input-select">
-                                <option value="0">Popular</option>
-                                <option value="1">Position</option>
-                            </select>
-                        </label>
-
-                        <label>
-                            Show:
-                            <select class="input-select">
-                                <option value="0">20</option>
-                                <option value="1">50</option>
-                            </select>
-                        </label>
-                    </div>
-                    <ul class="store-grid">
-                        <li class="active"><i class="fa fa-th"></i></li>
-                        <li><a href="#"><i class="fa fa-th-list"></i></a></li>
-                    </ul>
-                </div>
-                <!-- /store top filter -->
-                <!-- store products -->
-                <div class="row">
-                    @foreach (var item in Model)
-                    {
-                        <!-- product -->
-                        <div class="col-md-4 col-xs-6">
-                            <div class="product">
-                                <div class="product-img">
-                                    <img src="~/images/products/@item.ImageUrl" alt="">
-                                    <div class="product-label">
-                                        <span class="sale">-30%</span>
-                                        <span class="new">NEW</span>
-                                    </div>
-                                </div>
-                                <div class="product-body">
-                                    <p class="product-category">Category</p>
-                                    <h3 class="product-name"><a href="#">@item.Name</a></h3>
-                                    <h4 class="product-price">$@item.Price <del class="product-old-price">$990.00</del></h4>
-                                    <div class="product-rating">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                        <i class="fa fa-star"></i>
-                                    </div>
-                                    <div class="product-btns">
-                                        <button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-                                        <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-                                        <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-                                    </div>
-                                </div>
-                                <div class="add-to-cart">
-                                    <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- /product -->
-                    }
-
-
-                    @* <div class="clearfix visible-sm visible-xs"></div> *@
-
-                    @* 		<!-- product -->
-					<div class="col-md-4 col-xs-6">
-						<div class="product">
-							<div class="product-img">
-								<img src="./img/product09.png" alt="">
-							</div>
-							<div class="product-body">
-								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
-								<div class="product-rating">
-								</div>
-								<div class="product-btns">
-									<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
-									<button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
-									<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
-								</div>
-							</div>
-							<div class="add-to-cart">
-								<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
-							</div>
-						</div>
-					</div>
-					<!-- /product --> *@
-                </div>
-                <!-- /store products -->
-                <!-- store bottom filter -->
-                <div class="store-filter clearfix">
-                    <span class="store-qty">Showing 20-100 products</span>
-                    <ul class="store-pagination">
-                        <li class="active">1</li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#"><i class="fa fa-angle-right"></i></a></li>
-                    </ul>
-                </div>
-                <!-- /store bottom filter -->
+        <div id="store" class="col-md-9">
+    <!-- store top filter -->
+    <div class="store-filter clearfix">
+          <div class="store-sort">
+         <label>
+         Sort By:
+  <select class="input-select" onchange="changeSortOrder(this.value)">
+            <option value="" selected="@string.IsNullOrEmpty(currentSort)">Default</option>
+        <option value="price_asc" selected="@(currentSort == "price_asc")">Price: Low to High</option>
+            <option value="price_desc" selected="@(currentSort == "price_desc")">Price: High to Low</option>
+      <option value="name_asc" selected="@(currentSort == "name_asc")">Name: A-Z</option>
+          <option value="name_desc" selected="@(currentSort == "name_desc")">Name: Z-A</option>
+       </select>
+   </label>
             </div>
+      </div>
+       <!-- /store top filter -->
+
+                <!-- store products -->
+    <div class="row">
+       @if (Model != null && Model.Any())
+             {
+         foreach (var item in Model)
+             {
+      <!-- product -->
+    <div class="col-md-4 col-xs-6">
+     <div class="product">
+  <div class="product-img">
+      <img src="~/images/products/@item.ImageUrl" alt="@item.Name" style="max-height: 250px; object-fit: contain;">
+     </div>
+ <div class="product-body">
+       <p class="product-category">@item.Category?.Name</p>
+           <h3 class="product-name"><a href="#">@item.Name</a></h3>
+     <h4 class="product-price">@item.Price.ToString("N0") VNĐ</h4>
+        <div class="product-rating">
+    <i class="fa fa-star"></i>
+    <i class="fa fa-star"></i>
+        <i class="fa fa-star"></i>
+          <i class="fa fa-star"></i>
+          <i class="fa fa-star-o"></i>
+       </div>
+  <div class="product-btns">
+<button class="add-to-wishlist"><i class="fa fa-heart-o"></i><span class="tooltipp">add to wishlist</span></button>
+                <button class="add-to-compare"><i class="fa fa-exchange"></i><span class="tooltipp">add to compare</span></button>
+     <button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">quick view</span></button>
+     </div>
+    </div>
+     <div class="add-to-cart">
+          <button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> add to cart</button>
+       </div>
+         </div>
+         </div>
+   <!-- /product -->
+}
+    }
+   else
+        {
+      <div class="col-md-12">
+         <p class="text-center">No products found.</p>
+       </div>
+ }
+         </div>
+            <!-- /store products -->
+
+     <!-- store bottom filter (Pagination) -->
+  @if (ViewBag.TotalPages > 1)
+             {
+          <div class="store-filter clearfix">
+       <span class="store-qty">
+        Showing @((ViewBag.CurrentPage - 1) * ViewBag.PageSize + 1)-@(Math.Min(ViewBag.CurrentPage * ViewBag.PageSize, ViewBag.TotalProducts)) of @ViewBag.TotalProducts products
+               </span>
+               <ul class="store-pagination">
+      @if (ViewBag.CurrentPage > 1)
+               {
+           <li><a href="@Url.Action("Store", new { 
+  categories = selectedCategories, 
+         minPrice = ViewBag.MinPrice, 
+    maxPrice = ViewBag.MaxPrice, 
+     sortBy = ViewBag.SortBy, 
+             page = ViewBag.CurrentPage - 1 
+         })"><i class="fa fa-angle-left"></i></a></li>
+    }
+
+    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+       {
+         <li class="@(i == ViewBag.CurrentPage ? "active" : "")">
+<a href="@Url.Action("Store", new { 
+   categories = selectedCategories, 
+      minPrice = ViewBag.MinPrice, 
+      maxPrice = ViewBag.MaxPrice, 
+                 sortBy = ViewBag.SortBy, 
+page = i 
+        })">@i</a>
+             </li>
+      }
+
+     @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+  {
+           <li><a href="@Url.Action("Store", new { 
+          categories = selectedCategories, 
+       minPrice = ViewBag.MinPrice, 
+   maxPrice = ViewBag.MaxPrice, 
+        sortBy = ViewBag.SortBy, 
+       page = ViewBag.CurrentPage + 1 
+  })"><i class="fa fa-angle-right"></i></a></li>
+     }
+       </ul>
+     </div>
+            }
+     <!-- /store bottom filter -->
+        </div>
             <!-- /STORE -->
         </div>
-        <!-- /row -->
     </div>
-    <!-- /container -->
 </div>
-<!-- /SECTION -->
-<!-- NEWSLETTER -->
-<div id="newsletter" class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
-                <div class="newsletter">
-                    <p>Sign Up for the <strong>NEWSLETTER</strong></p>
-                    <form>
-                        <input class="input" type="email" placeholder="Enter Your Email">
-                        <button class="newsletter-btn"><i class="fa fa-envelope"></i> Subscribe</button>
-                    </form>
-                    <ul class="newsletter-follow">
-                        <li>
-                            <a href="#"><i class="fa fa-facebook"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-twitter"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-instagram"></i></a>
-                        </li>
-                        <li>
-                            <a href="#"><i class="fa fa-pinterest"></i></a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
-</div>
-<!-- /NEWSLETTER -->
 
+@section Scripts {
+    <script>
+        function changeSortOrder(sortValue) {
+  var form = document.getElementById('filterForm');
+   form.querySelector('input[name="sortBy"]').value = sortValue;
+            form.submit();
+        }
+    </script>
+}
